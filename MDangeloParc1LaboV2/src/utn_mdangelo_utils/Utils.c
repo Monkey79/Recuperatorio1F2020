@@ -19,16 +19,18 @@ void _orderPetsDsc(Pet *pCurrentPet, Pet *pNextPet);
 void _orderOwnerPetsNumDsc(Owner *pCurrentOwner, Owner *pNextOwner, Pet pets[], int petTop);
 void _orderOwnerPetsNumDsc(Owner *pCurrentOwner, Owner *pNextOwner, Pet pets[], int petTop);
 
+void _getLocationsHacordedData1(Location locations[], int *locId);
 void _getBreedsHacordedData1(Breed breeds[], int *breedId);
 void _getOwnersHarcodedData1(Owner owners[], int *ownerId);
 void _getPetsHarcodedData(Pet pets[], int *petId);
 
 void _getBreedById(Breed breeds[], int breedId, Breed *breed);
-void _showOwnerContent(Owner owner);
+void _showOwnerContent(Owner owner, Location locations[], int locationTop);
 void _showPetAndTheirBreed(Pet pet,Breed breed);
 void _getTypeDescription(char typeDescription[], int typeInt);
 void _showOwnerGridHeader();
 void _showPetsGridHeader();
+void _showPetAndTheirBreedConcatOwner(Pet pet, Breed breed, Owner owner, Location locations[]);
 void _showPetsBreedConcatOwnerGridHeader();
 //*******************************************
 void utilLb_createMenuAndCallUserSelectionChecker(int *usrSelection,Veterinary *pVeterinary, void(*pFunction)(int,Veterinary *)){
@@ -79,6 +81,9 @@ void utilLb_getYesNoQuestion(char *mssg,char *response){
 }
 
 /***************Data Harcoded**************/
+void utlLb_getLocationHarcodedData1(Location locations[], int *locationId){
+	_getLocationsHacordedData1(locations, locationId); //localidades
+}
 void utlLb_getBreedHarcodedData1(Breed breeds[], int *breedId){
 	_getBreedsHacordedData1(breeds, breedId); //raza
 }
@@ -93,7 +98,7 @@ void utlLb_getPetsHarcodedData1(Pet pets[], int *petId){
 void utilLb_showOwnersOnly(Veterinary veterinary, int ownerTop){
 	_showOwnerGridHeader();
 	for(int i=0;i<ownerTop;i++){
-		if(!veterinary.owners[i].empty)_showOwnerContent(veterinary.owners[i]);
+		if(!veterinary.owners[i].empty)_showOwnerContent(veterinary.owners[i], veterinary.locations, LOCATION_TOP);
 	}
 }
 
@@ -103,7 +108,7 @@ void utilLb_showOwnersAndTheirPetsWithBreeds(Veterinary veterinary){
 	for(int i=0;i<OWNER_TOP;i++){
 		noPet = FALSE;
 		_showOwnerGridHeader();
-		_showOwnerContent(veterinary.owners[i]);
+		_showOwnerContent(veterinary.owners[i],veterinary.locations, LOCATION_TOP);
 		_showPetsGridHeader();
 		for(int e=0;e<PETS_TOP;e++){
 			if(!veterinary.pets[e].empty && veterinary.pets[e].ownerId == veterinary.owners[i].id){
@@ -138,14 +143,14 @@ void utilLb_sortPetsByType(Pet pets[], int petTop, int sortMode){
 	}
 }
 
-void utilLb_showOwnerThaHavePets(Owner owners[],Pet pets[],int ownerTop, int petTop){
+void utilLb_showOwnerThaHavePets(Owner owners[],Pet pets[],int ownerTop, int petTop, Location locations[]){
 	int petNum=0;
 	_showOwnerGridHeader();
 	for(int i=0;i<ownerTop;i++){
 		if(!owners[i].empty){
 			petNum = petSv_getNumberOfPetsByOwnerId(pets,PETS_TOP, owners[i].id);
 			if(petNum>=1)
-				_showOwnerContent(owners[i]);
+				_showOwnerContent(owners[i], locations, LOCATION_TOP);
 			else
 				printf("--Este dueño NO tiene mascotas--\n");
 		}
@@ -160,7 +165,7 @@ void utilLb_showPethsMoreNYearWithOwner(Veterinary veterinary,int ownerTop, int 
 			if(!veterinary.owners[e].empty && !veterinary.pets[i].empty){
 				if(veterinary.owners[e].id == veterinary.pets[i].ownerId && veterinary.pets[i].age >= year){
 					breedSvc_getBreedByPetId(veterinary.breeds,breedTop, veterinary.pets[i].breedId,&petBreed);
-					_showPetAndTheirBreedConcatOwner(veterinary.pets[i],petBreed,veterinary.owners[e]);
+					_showPetAndTheirBreedConcatOwner(veterinary.pets[i],petBreed,veterinary.owners[e], veterinary.locations);
 				}else{
 					printf("--Este dueño NO tiene mascotas con mas %d años--\n", year);
 				}
@@ -263,7 +268,7 @@ void utilLb_calculatePercentageOwnerByGender(Owner owners[], int ownerTop){
 	printf("EL promedio de clientes mujeres es %.2f %\n",((float)femaleCustomerCnt*100)/totalCustomerCnt);
 }
 
-void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int customerTop,int petTop){
+void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int customerTop,int petTop, Location locations[]){
 	int sameGender = FALSE;
 	int firstTime = TRUE;
 	printf("---Dueños con mascotas del mismo sexo---\n");
@@ -274,7 +279,7 @@ void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int custome
 				_showOwnerGridHeader();
 				firstTime = FALSE;
 			}
-			_showOwnerContent(owners[i]);
+			_showOwnerContent(owners[i], locations, LOCATION_TOP);
 		}
 
 	}
@@ -347,9 +352,12 @@ void _getBreedById(Breed breeds[], int breedId, Breed *breed){
 		}
 	}
 }
-void _showOwnerContent(Owner owner){
+void _showOwnerContent(Owner owner, Location locations[], int locationTop){
+	char locEstate[50];
+	int locCodPost;
+	locSvc_getLocationInfoById(locations, locationTop, owner.locationId, locEstate, &locCodPost);
 	if(!owner.empty)
-		printf("%d \t%20s \t%22s \t%26s \t%10s \t%12d \t%12c\n", owner.id, owner.name, owner.lastName, owner.location,owner.phoneNumber, owner.age, owner.gender);
+		printf("%d \t%20s \t%22s \t%26s \t%10s \t%12d \t%12c\n", owner.id, owner.name, owner.lastName, locEstate,owner.phoneNumber, owner.age, owner.gender);
 }
 
 void _showPetAndTheirBreed(Pet pet,Breed breed){
@@ -358,11 +366,14 @@ void _showPetAndTheirBreed(Pet pet,Breed breed){
 	printf("%13d %15s %20s %24s %26s %10d %18.2f %12c\n", pet.id, typeDescrip,pet.name, breed.breedName,breed.breedCountry, pet.age, pet.weight, pet.gender);
 }
 
-void _showPetAndTheirBreedConcatOwner(Pet pet, Breed breed, Owner owner){
+void _showPetAndTheirBreedConcatOwner(Pet pet, Breed breed, Owner owner, Location locations[]){
+	char locEstate[50];
+	int locCodPost;
+	locSvc_getLocationInfoById(locations, LOCATION_TOP, owner.locationId, locEstate, &locCodPost);
 	char typeDescrip[50]={0};
 	_getTypeDescription(typeDescrip, pet.type);
 	printf("%13d %15s %20s %24s %26s %10d %18.2f %12c %20s %22s \n", pet.id, typeDescrip,pet.name, breed.breedName,breed.breedCountry, pet.age,
-			pet.weight,pet.gender,owner.name,owner.location);
+			pet.weight,pet.gender,owner.name,locEstate);
 }
 
 
@@ -420,6 +431,21 @@ void _showPetsBreedConcatOwnerGridHeader(){
 	printf("\tCliente_Localidad\n");
 }
 
+//Localidades
+void _getLocationsHacordedData1(Location locations[], int *locId){
+	int locIds[3]={1,2,3};
+	char locEstate[3][50] = {"Quilmes","Rosario","Santa Rosa"};
+	int locCodPost[3]={1211,1111,2233};
+	char locDescrp[3][50] = {"desc_quilmes","desc_rosario","desc_strosa"};
+	for(int i=0;i<LOCATION_TOP;i++){
+		locations[i].locId = ++i;
+		strcpy(locations[i].locEstate,locEstate[i]);
+		strcpy(locations[i].locDescrp,locDescrp[i]);
+		locations[i].empty = FALSE;
+	}
+
+}
+
 //Razas
 void _getBreedsHacordedData1(Breed breeds[], int *breedId){
 	int ids[6] = { 1, 2, 3, 4, 5,6 };
@@ -435,6 +461,7 @@ void _getBreedsHacordedData1(Breed breeds[], int *breedId){
 }
 //Dueño
 void _getOwnersHarcodedData1(Owner owners[], int *ownerId){
+	int locIds[3]= {1,2,3};
 	int ids[5] = { 1, 2, 3, 4, 5 };
 	char names[5][51] = { "cliente_1", "cliente_2", "cliente_3", "cliente_4", "cliente_5" };
 	char lastNames[5][51] = { "cliente_apell_1", "cliente_apell_2", "cliente_apell_3", "cliente_apell_4", "cliente_apell_5" };
@@ -447,7 +474,7 @@ void _getOwnersHarcodedData1(Owner owners[], int *ownerId){
 		owners[i].id = ids[i];
 		strcpy(owners[i].name, names[i]);
 		strcpy(owners[i].lastName, lastNames[i]);
-		strcpy(owners[i].location, locations[i]);
+		owners[i].locationId = locIds[i];
 		strcpy(owners[i].phoneNumber, phoneNumbers[i]);
 		owners[i].age = ages[i];
 		owners[i].gender = genders[i];

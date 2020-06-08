@@ -11,13 +11,22 @@
 #define TRUE 1
 #define FALSE 0
 
-#define OWNER_TOP 5 //10
-#define PETS_TOP 11 //20
+#define OWNER_TOP 5 		//10
+#define PETS_TOP 11 		//20
 #define BREEDS_TOP 6
+#define LOCATION_TOP 3
 
 #define NO_EMPTY_SPACE "[Attention] There is NO more empty space!\n"
 #define NO_ENTITY_FOUND "[Error] There is no customer with id=%d\n"
 #define ENTITY_CREATION_OK "[Success] Entity id=%d creation success\n"
+
+typedef struct{
+	int locId;
+	char locEstate[50]; //pcia
+	int locPostCode;
+	char locDescrp[50];
+	int empty;
+}Location;
 
 typedef struct{
 	int id; 	//PK
@@ -42,7 +51,7 @@ typedef struct {
 	int id; 		//PK
 	char name[TOP];
 	char lastName[TOP];
-	char location[TOP];
+	int locationId; //FK
 	char phoneNumber[TOP];
 	int age;
 	char gender; //M=Male F=Female
@@ -50,6 +59,7 @@ typedef struct {
 }Owner;
 
 typedef struct {
+	Location locations [LOCATION_TOP];
 	Owner owners[OWNER_TOP];
 	Pet pets[PETS_TOP];
 	Breed breeds[BREEDS_TOP];
@@ -58,6 +68,7 @@ typedef struct {
 	int ownerId;
 	int petId;
 	int breedId;
+	int locationId;
 }Veterinary;
 
 #endif /* UTN_MDANGELO_ENTITIES_MAINENTITIES_H_ */

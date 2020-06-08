@@ -237,6 +237,5 @@ void entTst_calculateAndShowAllInfo(Veterinary *veterinary){
 	utilLb_calculatePetsAgeAverageByType(veterinary->pets, PETS_TOP);
 	utilLb_calculatePercentageOwnerByGender(veterinary->owners, OWNER_TOP);
 
-	utilLb_showCustomerWithPetsSameGender(veterinary->owners, veterinary->pets,
-	OWNER_TOP, PETS_TOP);
+	utilLb_showCustomerWithPetsSameGender(veterinary->owners, veterinary->pets,OWNER_TOP, PETS_TOP,veterinary->locations);
 }

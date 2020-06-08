@@ -36,11 +36,13 @@ void vtBsns_initializeAllVeterinary(Veterinary *veterinary, int testMode){
 	veterinary->breedId = 0;
 	veterinary->ownerId = 0;
 	veterinary->petId = 0;
+	veterinary->locationId = 0;
 
 	/***Inicializo***/
 	breedSvc_initializeAllBreeds(veterinary->breeds, BREEDS_TOP);
 	ownerSvc_initializeAllOwners(veterinary->owners, OWNER_TOP);
 	petSvc_initializeAllPets(veterinary->pets, PETS_TOP);
+	locSvc_initializeAllLocation(veterinary->locations, LOCATION_TOP);
 	/**Harcodeo-Razas**/
 	if(!testMode)utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 }

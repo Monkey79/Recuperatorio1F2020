@@ -11,6 +11,7 @@
 #include "../utn_mdangelo_service/BreedService.h"
 #include "../utn_mdangelo_service/PetService.h"
 #include "../utn_mdangelo_service/OwnerService.h"
+#include "../utn_mdangelo_service/LocationSvc.h"
 
 #include "../utn_mdangelo_utils/Utils.h"
 

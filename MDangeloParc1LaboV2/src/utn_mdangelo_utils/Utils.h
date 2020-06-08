@@ -14,11 +14,12 @@ void utilLb_cleanStrValue(char *strVal);
 void utilLb_getYesNoQuestion(char *mssg,char *response);
 
 /****Data Harcoded*****/
+void utlLb_getLocationHarcodedData1(Location locations[], int *locationId);
 void utlLb_getBreedHarcodedData1(Breed breeds[], int *breedId);
 void utlLb_getOwnersHarcodedData1(Owner owners[],int *ownerId);
 void utlLb_getPetsHarcodedData1(Pet pets[], int *petId);
 /**********************/
-
+void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int customerTop,int petTop, Location locations[]);
 void utilLb_createMenuAndCallUserSelectionChecker(int *usrSelection,Veterinary *pVeterinary, void(*pFunction)(int,Veterinary *));
 
 void utilLb_showOwnersOnly(Veterinary veterinary, int ownerTop);
@@ -33,6 +34,6 @@ void utilLb_showPetsByType(Pet pets[],Breed breeds[],int petTop,int breedTop, in
 void utilLb_calculateAndShowPetsAgeAverage(Pet pets[],int petTop);
 void utilLb_calculatePetsAgeAverageByType(Pet pets[],int petTop);
 void utilLb_calculatePercentageOwnerByGender(Owner owners[], int ownerTop);
-void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int customerTop,int petTop);
+void utilLb_showCustomerWithPetsSameGender(Owner owners[],Pet pets[],int customerTop,int petTop, Location locations[]);
 
 #endif /* UTN_MDANGELO_UTILS_UTILS_H_ */
