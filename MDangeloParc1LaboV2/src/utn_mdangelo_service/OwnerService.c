@@ -11,7 +11,7 @@
 #define OWNER_MSSG_1 "De los siguientes ids de dueños seleccione uno:\n"
 
 //********Private Functions***********
-void _showAllOwners(Owner owners[],int ownerTop);
+void _showAllOwners(Owner owners[],int ownerTop,Location locations[]);
 void _showHeaderDataGrid(void);
 //************************************
 
@@ -19,10 +19,10 @@ void ownerSvc_initializeAllOwners(Owner owners[], int ownerTop){
 	ownerRp_initializeAllOwner(owners, ownerTop);
 }
 
-void ownerSvc_getValidOwnerId(Owner owners[],int *ownerId, int ownerTop){
+void ownerSvc_getValidOwnerId(Owner owners[],int *ownerId, int ownerTop, Location locations[]){
 	printf(OWNER_MSSG_1);
 	do{
-		_showAllOwners(owners,ownerTop);
+		_showAllOwners(owners,ownerTop,locations);
 		__fpurge(stdin);
 		scanf("%d",ownerId);
 	}while(!ownerSvc_checkIsValidOwnerId(owners,*ownerId));
@@ -31,8 +31,9 @@ void ownerSvc_getValidOwnerId(Owner owners[],int *ownerId, int ownerTop){
 int ownerSvc_deleteOwner(Owner owners[],int ownerTop, int ownerDeleteId){
 	return ownerRp_deleteOwnerById(owners, ownerTop, ownerDeleteId);
 }
-int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId){
+int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId, Location locations[]){
 	Owner newOwner;
+	int locId;
 
 	printf("Ingrese nombre del cliente:");
 	__fpurge(stdin);
@@ -43,10 +44,9 @@ int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId){
 	__fpurge(stdin);
 	fgets(newOwner.lastName, 50, stdin);
 	utilLb_cleanStrValue(newOwner.lastName);
-	printf("Ingrese localidad del cliente:");
-	__fpurge(stdin);
-	fgets(newOwner.location, 50, stdin);
-	utilLb_cleanStrValue(newOwner.location);
+
+	locSvc_getValidLocationId(locations, LOCATION_TOP, &locId);
+
 	printf("Ingrese telefono del cliente:");
 	__fpurge(stdin);
 	fgets(newOwner.phoneNumber, 50, stdin);
@@ -63,12 +63,14 @@ int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId){
 		newOwner.gender = toupper(newOwner.gender);
 	} while (newOwner.gender != 'M' && newOwner.gender != 'F');
 
+	newOwner.locationId = locId;
 	newOwner.id = ++(*ownerId);
 	return ownerRp_addOwner(owners, ownerTop, newOwner);
 }
 
-int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId){
+int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId, Location locations[]){
 	Owner updtOwner;
+	int locId;
 
 	printf("Ingrese nuevo nombre del cliente:");
 	__fpurge(stdin);
@@ -79,10 +81,12 @@ int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId){
 	__fpurge(stdin);
 	fgets(updtOwner.lastName, 50, stdin);
 	utilLb_cleanStrValue(updtOwner.lastName);
-	printf("Ingrese nueva localidad del cliente:");
-	__fpurge(stdin);
-	fgets(updtOwner.location, 50, stdin);
-	utilLb_cleanStrValue(updtOwner.location);
+
+
+	printf("-----Actualice la localidad-----\n");
+	locSvc_getValidLocationId(locations, LOCATION_TOP, &locId);
+	printf("---------------------------------\n");
+
 	printf("Ingrese nuevo telefono del cliente:");
 	__fpurge(stdin);
 	fgets(updtOwner.phoneNumber, 50, stdin);
@@ -98,7 +102,7 @@ int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId){
 		scanf("%c", &updtOwner.gender);
 		updtOwner.gender = toupper(updtOwner.gender);
 	} while (updtOwner.gender != 'M' && updtOwner.gender != 'F');
-
+	updtOwner.locationId = locId;
 	updtOwner.id = ownerUpdId;
 	return ownerRp_updateOwner(owners, ownerTop, updtOwner);
 }
@@ -115,13 +119,17 @@ void ownerSvc_getLength(Owner owners[],int *len,int ownerTop){
 }
 
 /*************Private functions****************************/
-void _showAllOwners(Owner owners[],int ownerTop){
+void _showAllOwners(Owner owners[],int ownerTop,Location locations[]){
+	char locEsate[50];
+	int locCodPost;
 	_showHeaderDataGrid();
 	for(int i=0;i<ownerTop;i++){
 		if(!owners[i].empty){
+			locSvc_getLocationInfoById(locations, LOCATION_TOP, owners[i].locationId, locEsate, &locCodPost);
+
 			printf("%d \t%20s \t%15s \t%15s \t%10s \t%12d \t%12c\n", owners[i].id,
 							owners[i].name, owners[i].lastName,
-							owners[i].location,owners[i].phoneNumber,
+							locEsate,owners[i].phoneNumber,
 							owners[i].age, owners[i].gender);
 		}
 	}

@@ -22,11 +22,12 @@ int entTst_petCreationTest(Veterinary * pVet){
 	int breedId;
 	int status = SUCCESS;
 
+	utlLb_getLocationHarcodedData1(pVet->locations, &pVet->locationId); //pido localidades harcodeadas
 	utlLb_getBreedHarcodedData1(pVet->breeds, &pVet->breedId); //pido razas harcodeada
 	utlLb_getOwnersHarcodedData1(pVet->owners, &pVet->ownerId); //pido dueños harcodeados
 
 	printf("--------------------Crear Mascota-------------------------\n");
-	ownerSvc_getValidOwnerId(pVet->owners, &ownerId, OWNER_TOP); //pido id de dueño existente
+	ownerSvc_getValidOwnerId(pVet->owners, &ownerId, OWNER_TOP,pVet->locations); //pido id de dueño existente
 	breedSvc_getValidBreedId(pVet->breeds, &breedId, BREEDS_TOP); //pido id de raza existente
 	status = petSv_createPet(pVet->pets, breedId, ownerId, &pVet->petId);
 	if (status) {
@@ -88,10 +89,10 @@ int entTst_updateAPetTest(Veterinary *veterinary){
 	int breedUpdId = 0;
 	int petUpdId = 0;
 	char updateBreed;
-
-	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
-	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
-	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId); //pido localidades harcodeados
+	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId); //pido dueños harcodeados
+	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId); //pido razas harcodeados
+	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);//pido mascotas harcodeados
 	printf("--------------------Actualizar Mascota (y su raza)-------------------------\n");
 
 	/*****Join with Breed******/
@@ -122,12 +123,13 @@ int entTst_updateAPetTest(Veterinary *veterinary){
 int entTst_updateOwnerTest(Veterinary *veterinary){
 	int ownerUpdId = 0;
 	int status = SUCCESS;
-	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId); //pido localidades harcodeados
+	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId); //pido dueños harcodeados
 
 	printf("--------------------Actualizar Dueño-------------------------\n");
-	ownerSvc_getValidOwnerId(veterinary->owners, &ownerUpdId, OWNER_TOP);
+	ownerSvc_getValidOwnerId(veterinary->owners, &ownerUpdId, OWNER_TOP,veterinary->locations);
 
-	status = ownerSvc_updateOwner(veterinary->owners, OWNER_TOP, ownerUpdId);
+	status = ownerSvc_updateOwner(veterinary->owners, OWNER_TOP, ownerUpdId,veterinary->locations);
 	if (status) {
 		printf(UPDATE_OWNER_SUCCESS_MSSG);
 		utilLb_showOwnersOnly(*veterinary, OWNER_TOP);
@@ -140,7 +142,8 @@ int entTst_updateOwnerTest(Veterinary *veterinary){
 
 int entTst_createOwnerTest(Veterinary *veterinary) {
 	printf("--------------------Creando Dueño-------------------------\n");
-	int status = ownerSvc_createOwner(veterinary->owners, OWNER_TOP, &veterinary->ownerId);
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId); //pido localidades harcodeados
+	int status = ownerSvc_createOwner(veterinary->owners, OWNER_TOP, &veterinary->ownerId,veterinary->locations);
 	if (status) {
 		printf(CREATE_OWNER_SUCCESS_MSSG, veterinary->ownerId);
 		utilLb_showOwnersOnly(*veterinary, OWNER_TOP);
@@ -154,13 +157,13 @@ int entTst_createOwnerTest(Veterinary *veterinary) {
 int entTst_deleteOwner(Veterinary *veterinary){
 	int ownerDelId;
 	int status;
-
-	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
-	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
-	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId); //pido localidades harcodeados
+	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId); //pido dueños harcodeados
+	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId); //pido razas harcodeados
+	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId); //pido mascotas harcodeados
 
 	printf("--------------------Borrando Dueño-------------------------\n");
-	ownerSvc_getValidOwnerId(veterinary->owners, &ownerDelId, OWNER_TOP);
+	ownerSvc_getValidOwnerId(veterinary->owners, &ownerDelId, OWNER_TOP,veterinary->locations);
 
 	status = ownerSvc_deleteOwner(veterinary->owners, OWNER_TOP, ownerDelId);
 	if (status) {
@@ -181,9 +184,10 @@ int entTst_deleteOwner(Veterinary *veterinary){
 
 //Pregunta 9
 void entTst_sortPetsByTypeAndShowAll(Veterinary *veterinary){
-	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
-	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
-	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId); //pido localidades harcodeados
+	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);  //pido dueños harcodeados
+	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId); //pido razas harcodeados
+	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId); //pido mascotas harcodeados
 	printf("----------ANTES---------------\n");
 	utilLb_showOwnersAndTheirPetsWithBreeds(*veterinary);
 	utilLb_sortPetsByType(veterinary->pets, PETS_TOP, 1); //1=ASC 0=DSC
@@ -192,14 +196,16 @@ void entTst_sortPetsByTypeAndShowAll(Veterinary *veterinary){
 }
 //pregunta 11
 void entTst_showOwnerWithPets(Veterinary *veterinary){
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
 	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
 	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
 
-	utilLb_showOwnerThaHavePets(veterinary->owners, veterinary->pets, OWNER_TOP, PETS_TOP);
+	utilLb_showOwnerThaHavePets(veterinary->owners, veterinary->pets, OWNER_TOP, PETS_TOP,veterinary->locations);
 }
 //pregunta 12
 void entTst_showPetsMoreThan3YearsAndHisOwner(Veterinary *veterinary){
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
 	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
 	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
@@ -208,6 +214,7 @@ void entTst_showPetsMoreThan3YearsAndHisOwner(Veterinary *veterinary){
 }
 //pregunta 13
 void entTst_showPetsByType(Veterinary *veterinary){
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
 	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
 	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
@@ -217,6 +224,7 @@ void entTst_showPetsByType(Veterinary *veterinary){
 //Ordeno por cant mascotas si esta cantidades son iguales se ordena alfabeticamente por nombre en forma ascendente
 void entTst_sortOwnerByPetsNumberAndOwnerName(Veterinary *veterinary){
 	int mode = 1; //1=asc 0=dsc
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
 	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
 	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
@@ -229,6 +237,7 @@ void entTst_sortOwnerByPetsNumberAndOwnerName(Veterinary *veterinary){
 }
 
 void entTst_calculateAndShowAllInfo(Veterinary *veterinary){
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
 	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
 	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
 	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);

@@ -12,10 +12,10 @@
 #include "../utn_mdangelo_repo/OwnerRepo.h"
 
 void ownerSvc_initializeAllOwners(Owner owners[], int ownerTop);
-void ownerSvc_getValidOwnerId(Owner owners[],int *ownerId, int ownerTop);
+void ownerSvc_getValidOwnerId(Owner owners[],int *ownerId, int ownerTop, Location locations[]);
 
-int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId);
-int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId);
+int ownerSvc_createOwner(Owner owners[], int ownerTop, int *ownerId, Location locations[]);
+int ownerSvc_updateOwner(Owner owners[],int ownerTop, int ownerUpdId, Location locations[]);
 int ownerSvc_deleteOwner(Owner owners[],int ownerTop, int ownerDeleteId);
 int ownerSvc_checkIsValidOwnerId(Owner owners[],int ownerId);
 

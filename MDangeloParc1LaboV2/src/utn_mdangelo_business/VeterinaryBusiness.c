@@ -63,7 +63,7 @@ void vtnBsns_createAPet(Veterinary *veterinary) {
 
 	if (ownerLen>=1) {
 		printf("--------------------Crear Mascota-------------------------\n");
-		ownerSvc_getValidOwnerId(veterinary->owners, &ownerId, OWNER_TOP); //pido id de dueño existente
+		ownerSvc_getValidOwnerId(veterinary->owners, &ownerId, OWNER_TOP,veterinary->locations); //pido id de dueño existente
 		breedSvc_getValidBreedId(veterinary->breeds, &breedId, BREEDS_TOP); //pido id de raza existente
 
 		status = petSv_createPet(veterinary->pets, breedId, ownerId, &veterinary->petId);
@@ -165,8 +165,8 @@ void vtnBsns_updateOwner(Veterinary *veterinary){
 
 	printf("--------------------Actualizar Dueño-------------------------\n");
 	if(ownerLen>=1){
-		ownerSvc_getValidOwnerId(veterinary->owners, &ownerUpdId, OWNER_TOP);
-		status = ownerSvc_updateOwner(veterinary->owners, OWNER_TOP, ownerUpdId);
+		ownerSvc_getValidOwnerId(veterinary->owners, &ownerUpdId, OWNER_TOP,veterinary->locations);
+		status = ownerSvc_updateOwner(veterinary->owners, OWNER_TOP, ownerUpdId,veterinary->locations);
 		if (status) {
 			printf(UPDATE_OWNER_SUCCESS_MSSG);
 			utilLb_showOwnersOnly(*veterinary, OWNER_TOP);
@@ -181,7 +181,7 @@ void vtnBsns_updateOwner(Veterinary *veterinary){
 
 void vtnBsns_createOwner(Veterinary *veterinary){
 	printf("--------------------Creando Dueño-------------------------\n");
-	int status = ownerSvc_createOwner(veterinary->owners, OWNER_TOP, &veterinary->ownerId);
+	int status = ownerSvc_createOwner(veterinary->owners, OWNER_TOP, &veterinary->ownerId,veterinary->locations);
 	if (status) {
 		printf(CREATE_OWNER_SUCCESS_MSSG, veterinary->ownerId);
 		utilLb_showOwnersOnly(*veterinary, OWNER_TOP);
@@ -199,7 +199,7 @@ void vtnBsns_deleteOwner(Veterinary *veterinary){
 
 	printf("--------------------Borrando Dueño-------------------------\n");
 	if(ownerLen>=1){
-		ownerSvc_getValidOwnerId(veterinary->owners, &ownerDelId, OWNER_TOP);
+		ownerSvc_getValidOwnerId(veterinary->owners, &ownerDelId, OWNER_TOP,veterinary->locations);
 		status = ownerSvc_deleteOwner(veterinary->owners, OWNER_TOP, ownerDelId);
 		if (status) {
 			printf(DELETE_OWNER_SUCCESS_MSSG, ownerDelId);
@@ -265,7 +265,7 @@ void vtnBsn_showOwnerWithPetsSameGender(Veterinary *veterinary){
 	petSv_getLength(veterinary->pets,&petLen, PETS_TOP);
 	int petType=0;
 	if(ownerLen>=1 && petLen>=1){
-		utilLb_showCustomerWithPetsSameGender(veterinary->owners, veterinary->pets,OWNER_TOP, PETS_TOP);
+		utilLb_showCustomerWithPetsSameGender(veterinary->owners, veterinary->pets,OWNER_TOP, PETS_TOP,veterinary->locations);
 	}else{
 		printf("--NO hay dueños y/o mascotas (primero cree un dueño y asignele una mascota)--\n");
 	}

@@ -24,20 +24,20 @@ int main(void) {
 	if(!TEST_MODE)
 		vtnBsn_startVeterinary(&veterinary);
 	else{
-		//entTst_petCreationTest(&veterinary);
-		//entTst_updateABreedTest(&veterinary);
-		//entTst_deleteAPetTest(&veterinary);
-		//entTst_updateAPetTest(&veterinary);
-		//entTst_updateOwnerTest(&veterinary);
-		//entTst_createOwnerTest(&veterinary);
-		//entTst_deleteOwner(&veterinary);
+		entTst_petCreationTest(&veterinary); //ok
+		//entTst_updateABreedTest(&veterinary); //ok
+		//entTst_deleteAPetTest(&veterinary); //ok
+		//entTst_updateAPetTest(&veterinary); //ok
+		//entTst_updateOwnerTest(&veterinary); //ok
+		//entTst_createOwnerTest(&veterinary); //ok
+		//entTst_deleteOwner(&veterinary); //ok
 
-		//entTst_sortPetsByTypeAndShowAll(&veterinary);
-		//entTst_showOwnerWithPets(&veterinary);
-		//entTst_showPetsMoreThan3YearsAndHisOwner(&veterinary);
-		//entTst_showPetsByType(&veterinary);
-		//entTst_sortOwnerByPetsNumberAndOwnerName(&veterinary);
-		//entTst_calculateAndShowAllInfo(&veterinary);
+		//entTst_sortPetsByTypeAndShowAll(&veterinary); //ok
+		//entTst_showOwnerWithPets(&veterinary); //ok
+		//entTst_showPetsMoreThan3YearsAndHisOwner(&veterinary); //ok
+		//entTst_showPetsByType(&veterinary); //ok
+		//entTst_sortOwnerByPetsNumberAndOwnerName(&veterinary); //ok
+		//entTst_calculateAndShowAllInfo(&veterinary);//ok
 	}
 	printf("============END==================\n");
 	return EXIT_SUCCESS;

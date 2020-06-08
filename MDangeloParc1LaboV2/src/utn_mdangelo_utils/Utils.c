@@ -166,8 +166,6 @@ void utilLb_showPethsMoreNYearWithOwner(Veterinary veterinary,int ownerTop, int 
 				if(veterinary.owners[e].id == veterinary.pets[i].ownerId && veterinary.pets[i].age >= year){
 					breedSvc_getBreedByPetId(veterinary.breeds,breedTop, veterinary.pets[i].breedId,&petBreed);
 					_showPetAndTheirBreedConcatOwner(veterinary.pets[i],petBreed,veterinary.owners[e], veterinary.locations);
-				}else{
-					printf("--Este dueño NO tiene mascotas con mas %d años--\n", year);
 				}
 			}
 		}
@@ -438,11 +436,13 @@ void _getLocationsHacordedData1(Location locations[], int *locId){
 	int locCodPost[3]={1211,1111,2233};
 	char locDescrp[3][50] = {"desc_quilmes","desc_rosario","desc_strosa"};
 	for(int i=0;i<LOCATION_TOP;i++){
-		locations[i].locId = ++i;
+		locations[i].locId = (i+1);
+		locations[i].locPostCode = locCodPost[i];
 		strcpy(locations[i].locEstate,locEstate[i]);
 		strcpy(locations[i].locDescrp,locDescrp[i]);
 		locations[i].empty = FALSE;
 	}
+	*locId=3;
 
 }
 
@@ -474,12 +474,16 @@ void _getOwnersHarcodedData1(Owner owners[], int *ownerId){
 		owners[i].id = ids[i];
 		strcpy(owners[i].name, names[i]);
 		strcpy(owners[i].lastName, lastNames[i]);
-		owners[i].locationId = locIds[i];
 		strcpy(owners[i].phoneNumber, phoneNumbers[i]);
 		owners[i].age = ages[i];
 		owners[i].gender = genders[i];
 		owners[i].empty = FALSE;
 	}
+	owners[0].locationId = locIds[0];
+	owners[1].locationId = locIds[1];
+	owners[2].locationId = locIds[2];
+	owners[3].locationId = locIds[0];
+	owners[4].locationId = locIds[1];
 	*ownerId = 5;
 }
 //Mascotas
