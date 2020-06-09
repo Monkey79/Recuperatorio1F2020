@@ -235,6 +235,21 @@ void entTst_sortOwnerByPetsNumberAndOwnerName(Veterinary *veterinary){
 	printf("--->AFTER------->:\n");
 	utilLb_showOwnersAndTheirPetsWithBreeds(*veterinary);
 }
+//pregunta 21
+void entTst_sortOwnerByLocIdAndOwnerName(Veterinary *veterinary){
+	int mode = 1; //1=asc 0=dsc
+	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);
+	utlLb_getOwnersHarcodedData1(veterinary->owners, &veterinary->ownerId);
+	utlLb_getBreedHarcodedData1(veterinary->breeds, &veterinary->breedId);
+	utlLb_getPetsHarcodedData1(veterinary->pets, &veterinary->petId);
+
+	printf("--->BEFORE------->:\n");
+	utilLb_showOwnersAndTheirPetsWithBreeds(*veterinary);
+	utilLb_sortOwnerByLocIdAndOwnerName(veterinary->owners, OWNER_TOP,1);
+	printf("--->AFTER------->:\n");
+	utilLb_showOwnersAndTheirPetsWithBreeds(*veterinary);
+}
+
 
 void entTst_calculateAndShowAllInfo(Veterinary *veterinary){
 	utlLb_getLocationHarcodedData1(veterinary->locations, &veterinary->locationId);

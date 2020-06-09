@@ -24,7 +24,7 @@ int main(void) {
 	if(!TEST_MODE)
 		vtnBsn_startVeterinary(&veterinary);
 	else{
-		entTst_petCreationTest(&veterinary); //ok
+		//entTst_petCreationTest(&veterinary); //ok
 		//entTst_updateABreedTest(&veterinary); //ok
 		//entTst_deleteAPetTest(&veterinary); //ok
 		//entTst_updateAPetTest(&veterinary); //ok
@@ -38,6 +38,8 @@ int main(void) {
 		//entTst_showPetsByType(&veterinary); //ok
 		//entTst_sortOwnerByPetsNumberAndOwnerName(&veterinary); //ok
 		//entTst_calculateAndShowAllInfo(&veterinary);//ok
+
+		entTst_sortOwnerByLocIdAndOwnerName(&veterinary);//preg 21
 	}
 	printf("============END==================\n");
 	return EXIT_SUCCESS;

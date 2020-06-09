@@ -27,7 +27,9 @@ void utilLb_showOwnersAndTheirPetsWithBreeds(Veterinary veterinary);
 void utilLb_showAllPetsAndTheirBreeds(Pet pets[],Breed breeds[],int petTop, int breedTop);
 
 void utilLb_sortPetsByType(Pet pets[], int petTop, int sortMode);
-void utilLb_sortOwnerByNumberOfPetsAndOwnerName(Owner owners[],Pet pets[],int customerTop,int petTop, int asc);
+void utilLb_sortOwnerByNumberOfPetsAndOwnerName(Owner owners[],Pet pets[],int customerTop,int petTop, int asc);//preg 21
+void utilLb_sortOwnerByLocIdAndOwnerName(Owner owners[],int customerTop, int asc);
+
 void utilLb_showPethsMoreNYearWithOwner(Veterinary veterinary,int ownerTop, int petTop, int breedTop, int year);
 void utilLb_showPetsByType(Pet pets[],Breed breeds[],int petTop,int breedTop, int petType);
 

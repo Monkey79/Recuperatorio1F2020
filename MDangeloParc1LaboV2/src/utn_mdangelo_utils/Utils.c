@@ -16,6 +16,8 @@
 //*****Private Functions**********************
 void _orderPetsAsc(Pet *pCurrentPet, Pet *pNextPet);
 void _orderPetsDsc(Pet *pCurrentPet, Pet *pNextPet);
+void _orderOwnerLocIdAsc(Owner *pCurrentOwner, Owner *pNextOwner);
+void _orderOwnerLocIdDsc(Owner *pCurrentOwner, Owner *pNextOwner);
 void _orderOwnerPetsNumDsc(Owner *pCurrentOwner, Owner *pNextOwner, Pet pets[], int petTop);
 void _orderOwnerPetsNumDsc(Owner *pCurrentOwner, Owner *pNextOwner, Pet pets[], int petTop);
 
@@ -201,6 +203,26 @@ void utilLb_sortOwnerByNumberOfPetsAndOwnerName(Owner owners[],Pet pets[],int cu
 		}
 	}
 }
+
+//Ordeno por loc-id si esta cantidades son iguales se ordena alfabeticamente por nombre en forma descendente
+//Responde punto 21
+void utilLb_sortOwnerByLocIdAndOwnerName(Owner owners[],int customerTop, int asc){
+	Owner ownerAux;
+	int currentNumOfPets;
+	int nextNumOfPets;
+	for(int i=0;i<customerTop;i++){
+		for(int e=i+1;e<customerTop;e++){
+			if(!owners[i].empty && !owners[e].empty){
+				if(asc)
+					_orderOwnerLocIdAsc(&owners[i], &owners[e]);
+				else
+					_orderOwnerLocIdDsc(&owners[i], &owners[e]);
+			}
+
+		}
+	}
+}
+
 void utilLb_calculateAndShowPetsAgeAverage(Pet pets[],int petTop){
 	int cont=0;
 	int ageAcum=0;
@@ -343,6 +365,39 @@ void _orderOwnerPetsNumDsc(Owner *pCurrentOwner, Owner *pNextOwner, Pet pets[], 
 	}
 }
 
+void _orderOwnerLocIdAsc(Owner *pCurrentOwner, Owner *pNextOwner){
+	Owner ownerAux;
+
+	if(pCurrentOwner->locationId>pNextOwner->locationId){
+		ownerAux = *pNextOwner;
+		*pNextOwner = *pCurrentOwner;
+		*pCurrentOwner = ownerAux;
+	}else if(pCurrentOwner->locationId==pNextOwner->locationId){
+		if(strcmp(pCurrentOwner->name, pNextOwner->name)>0){
+			ownerAux = *pNextOwner;
+			*pNextOwner = *pCurrentOwner;
+			*pCurrentOwner = ownerAux;
+		}
+	}
+}
+
+void _orderOwnerLocIdDsc(Owner *pCurrentOwner, Owner *pNextOwner){
+	Owner ownerAux;
+
+	if(pCurrentOwner->locationId<pNextOwner->locationId){
+		ownerAux = *pNextOwner;
+		*pNextOwner = *pCurrentOwner;
+		*pCurrentOwner = ownerAux;
+
+	}else if(pCurrentOwner->locationId==pNextOwner->locationId){
+		if(strcmp(pCurrentOwner->name, pNextOwner->name)<0){
+			ownerAux = *pNextOwner;
+			*pNextOwner = *pCurrentOwner;
+			*pCurrentOwner = ownerAux;
+		}
+	}
+}
+
 void _getBreedById(Breed breeds[], int breedId, Breed *breed){
 	for(int i=0;i<BREEDS_TOP;i++){
 		if(!breeds[i].empty && breeds[i].id == breedId){
@@ -432,7 +487,7 @@ void _showPetsBreedConcatOwnerGridHeader(){
 //Localidades
 void _getLocationsHacordedData1(Location locations[], int *locId){
 	int locIds[3]={1,2,3};
-	char locEstate[3][50] = {"Quilmes","Rosario","Santa Rosa"};
+	char locEstate[3][50] = {"1=Quilmes","2=Rosario","3=Santa Rosa"};
 	int locCodPost[3]={1211,1111,2233};
 	char locDescrp[3][50] = {"desc_quilmes","desc_rosario","desc_strosa"};
 	for(int i=0;i<LOCATION_TOP;i++){

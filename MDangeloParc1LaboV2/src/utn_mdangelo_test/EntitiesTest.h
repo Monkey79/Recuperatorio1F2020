@@ -22,6 +22,7 @@ void entTst_showOwnerWithPets(Veterinary *veterinary);
 void entTst_showPetsMoreThan3YearsAndHisOwner(Veterinary *veterinary);
 void entTst_showPetsByType(Veterinary *veterinary);
 void entTst_sortOwnerByPetsNumberAndOwnerName(Veterinary *veterinary);
+void entTst_sortOwnerByLocIdAndOwnerName(Veterinary *veterinary);//preg 21
 void entTst_calculateAndShowAllInfo(Veterinary *veterinary);
 
 #endif /* UTN_MDANGELO_TEST_ENTITIESTEST_H_ */
